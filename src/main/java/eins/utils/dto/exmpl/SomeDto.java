@@ -10,11 +10,12 @@
 
 package eins.utils.dto.exmpl;
 
+import eins.utils.dto.DataTransferObject;
 import eins.utils.dto.Relation;
 import lombok.Data;
 
 @Data
-public class SomeDto {
+public class SomeDto implements DataTransferObject {
     @Relation(className = SomeEntity1.class, fieldName = "name")
     private String name;
     @Relation(className = SomeEntity2.class, fieldName = "city")
