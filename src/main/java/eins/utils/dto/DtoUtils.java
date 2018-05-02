@@ -5,7 +5,7 @@
  *
  * 02.05.18
  *
- * All rights reserved by DoubleO Team (Team#1)
+* Written by Orok.Eins
  * */
 
 package eins.utils.dto;
