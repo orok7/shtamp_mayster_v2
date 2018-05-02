@@ -1,0 +1,50 @@
+.fleft { float: left }
+.fright { float: right }
+
+.naul:hover{ text-decoration: none;}
+
+.bodybg { background: #f0f0be }
+.menubg { background: #f0f0be }
+.headerbg { background: #0064be }
+.footerbg { background: #0064be }
+.clWhite { color: white}
+
+.contentbg { background: #feffc8 }
+.mrg-b15 { margin-bottom: 15px }
+.mrg-r5 { margin-right: 5px }
+.mrg-t10 { margin-top: 10px }
+.mrg-l10 { margin-left: 10px }
+
+body { padding: 0;  margin: 0; width: 1349px; font-family: Calibri}
+
+.border {
+    box-shadow: 1px 1px 5px grey;
+    border-radius: 3px
+}
+/*input[type=text],
+input[type=email],
+input[type=password],
+input[type=search]{
+    outline: none;
+    border: 1px solid #888;
+    color: black;
+    padding: 3px;
+    height: 25px;
+}
+
+input[type=submit]{
+    height: 25px;
+    color: black;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus,
+input[type=search]:focus {
+    background: #feffc8;
+}
+
+
+p {
+    text-align: center;
+}*/

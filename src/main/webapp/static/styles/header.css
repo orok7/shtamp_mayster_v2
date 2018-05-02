@@ -1,0 +1,76 @@
+.myheader {
+    width: 100%;
+    display: inline-block;
+    margin: 50px 0 7px;
+    padding: 7px 3px;
+    color: white;
+}
+
+.myheader .tableHeader {
+    font-size: medium;
+    font-weight: normal;
+    text-align: center;
+    color: white;
+}
+
+.myheader .tableHeader a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.myheader div{
+    padding: 0;
+}
+
+.mylogo {
+    position: absolute;
+    top: 24px;
+    left: 25px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: #0064be url("/img/logo_small_white.png") round;
+    border: solid 5px #0064be;
+    transition: 0.25s
+}
+
+.mylogo:hover {
+    border: solid 3px #0064be;
+}
+
+.search_form {
+    margin-top: 10px;
+}
+
+.mycart {
+    width: 75px;
+    height: 75px;
+    margin-top: 12px;
+    margin-left: 5px;
+    background: #0064be url("/img/cart1.png") round;
+    transition: 0.125s;
+    float: left;
+}
+
+.mycart:hover {
+    background: #0064be url("/img/cart2.png") round;
+}
+
+.myuser {
+    width: 75px;
+    height: 75px;
+    margin-top: 12px;
+    margin-left: 5px;
+    background: #0064be url("/img/user1.png") round;
+    transition: 0.125s;
+    float: left;
+}
+
+.myuser:hover {
+    background: #0064be url("/img/user2.png") round;
+}
+
+.width80 { width: 79%}
+.width100 { width: 100%}
+.width20 { width: 19%}
+.height100 { height: 100%}

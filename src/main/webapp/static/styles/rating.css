@@ -1,0 +1,18 @@
+.rating-div-lg{ height: 30px; width: 165px; background: url("/img/star-emp-lg.png") no-repeat; }
+
+.rating-div-lg div{ height: 100%; background: url("/img/star-sol-lg.png") no-repeat; }
+
+.rating-div-md{ height: 20px; width: 110px; background: url("/img/star-emp-md.png") no-repeat; }
+
+.rating-div-md div{ height: 100%; background: url("/img/star-sol-md.png") no-repeat; }
+
+.rating-div-sm{ height: 15px; width: 83px; background: url("/img/star-emp-sm.png") no-repeat; }
+
+.rating-div-sm div{ height: 100%; background: url("/img/star-sol-sm.png") no-repeat; }
+
+.review-div{
+    width: 100%;
+    min-height: 50px;
+    padding: 10px 30px;
+    background: white;
+}

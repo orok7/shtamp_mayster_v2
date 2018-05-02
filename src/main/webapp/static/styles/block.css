@@ -1,0 +1,29 @@
+.block {
+    width: 200px;
+    height: 370px;
+    margin: 20px;
+    float: left;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px grey;
+}
+
+.block img {
+    margin: 10px 10px;
+    width: 180px;
+    height: 180px;
+}
+
+.block h4 {
+    margin: 5px 5px;
+    color: red;
+}
+
+.block p {
+    margin: 5px 5px;
+    color: black;
+    height: 75px;
+}
+
+.block:hover {
+    box-shadow: 2px 2px 15px black;
+}
