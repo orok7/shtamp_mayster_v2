@@ -10,9 +10,16 @@
 
 package eins.utils.dto.exmpl;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SomeEntity2 {
     private String name;
+    private SomeEntity1 someEntity1;
 }
