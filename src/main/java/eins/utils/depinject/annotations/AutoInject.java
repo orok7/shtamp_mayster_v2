@@ -1,4 +1,4 @@
-package eins.utils.dto;
+package eins.utils.depinject.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Relation {
-    Class<?> className() default Void.class;
-    String fieldName() default "theSame";
+public @interface AutoInject {
+	Class<?> qualifier() default void.class;
 }

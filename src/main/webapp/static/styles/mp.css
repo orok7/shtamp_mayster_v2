@@ -3,7 +3,7 @@
 
 .naul:hover{ text-decoration: none;}
 
-.bodybg { background: #f0f0be }
+.bodybg { background: #f0f0be; margin: 0 auto }
 .menubg { background: #f0f0be }
 .headerbg { background: #0064be }
 .footerbg { background: #0064be }

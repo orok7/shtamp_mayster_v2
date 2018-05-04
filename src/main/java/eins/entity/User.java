@@ -63,7 +63,7 @@ public class User implements UserDetails {
 
     private String phoneNumber;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private CompanyUser companyData;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer", cascade = CascadeType.MERGE)

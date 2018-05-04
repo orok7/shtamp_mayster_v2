@@ -39,9 +39,6 @@ public class Product {
     @Column(name = "main_picture")
     private String mainPicture;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.MERGE)
-    private List<Image> images = new ArrayList<>();
-
     private double rating;
 
     @Column(name = "number_of_ratings")
