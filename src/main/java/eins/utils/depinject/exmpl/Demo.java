@@ -16,7 +16,7 @@ public class Demo {
 	private SomeTest2 someTest2;
 
 	public static void main(String[] args) {
-		DependencyInjector depinject = new DependencyInjectorImpl("ua.softserve");
+		DependencyInjector depinject = new DependencyInjectorImpl("eins");
 		Demo demo = depinject.getComponent(Demo.class);
 		demo.someTest2.doThis();
 	}

@@ -25,6 +25,13 @@ public class DtoUtils {
 
     public static <T> T convertToDto(Class<T> dtoType, Object... entities) {
         T dto = InstanceUtils.newInstance(dtoType);
+        Dto dtoTypeAnnotation = dtoType.getAnnotation(Dto.class);
+        final Class<?> appliedOnlyTo;
+        if (dtoTypeAnnotation != null) {
+            appliedOnlyTo = dtoTypeAnnotation.appliedOnlyTo();
+        } else {
+            appliedOnlyTo = Void.class;
+        }
         List<Field> annotatedFields = Arrays.stream(dtoType.getDeclaredFields())
                 .filter(f -> f.isAnnotationPresent(Relation.class)).collect(Collectors.toList());
         Map<Class<?>, Object> entitiesMap = prepareEntitiesMap(entities);
@@ -33,8 +40,14 @@ public class DtoUtils {
                     dtoType.getSimpleName());
             return null;
         }
+        //Todo finish it
         annotatedFields.forEach(dtoField -> {
             Relation annotation = dtoField.getAnnotation(Relation.class);
+            if (appliedOnlyTo != Void.class) {
+                if (!annotation.className().equals(appliedOnlyTo)) {
+                    log.warn("{} was skipped because the entity type not the same to appliedOnlyTo. Remove appliedOnlyTo parameter from @Dto", dtoField.getName());
+                }
+            }
             Object o = entitiesMap.get(annotation.className());
             String fieldName = annotation.fieldName();
             try {

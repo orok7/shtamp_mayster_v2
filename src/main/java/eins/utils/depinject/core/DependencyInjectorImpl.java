@@ -90,7 +90,7 @@ public class DependencyInjectorImpl implements DependencyInjector {
                     continue;
                 }
             }
-            log.info("component: {} injected to: {}", injected.getClass(), field.getType());
+            log.info("component: {} injected to: {}.{}", injected.getClass(), field.getDeclaringClass().getName(), field.getType().getSimpleName());
             field.setAccessible(true);
             field.set(componentsContainer.get(mainClass), injected);
         }

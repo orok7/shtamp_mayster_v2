@@ -13,7 +13,7 @@ public interface ProductDao extends JpaRepository<Product,Integer> {
     @Query("select p from Product p where p.name like :searchThis or p.description like :searchThis")
     List<Product> findAllBySearch(@Param("searchThis") String searchThis);
 
-    @Query("select p from Product p left outer join fetch p.group")
+    @Query("select p from Product p left outer join fetch p.reviews order by p.name")
     List<Product> findAllWithGroups();
 
     @Query("select p from Product p left outer join fetch p.group where p.id=:id")

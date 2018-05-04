@@ -47,7 +47,6 @@ public class DbServiceImpl implements DbService {
 
     
     @Autowired private CompanyUserDao companyUserDao;
-    @Autowired private ImageDao imageDao;
     @Autowired private InvoiceDao invoiceDao;
     @Autowired private ProductGroupDao productGroupDao;
     @Autowired private ProductDao productDao;
@@ -59,7 +58,6 @@ public class DbServiceImpl implements DbService {
 
     private void initMyDAOMap(){
         dbDAO.put(CompanyUser.class, companyUserDao);
-        dbDAO.put(Image.class, imageDao);
         dbDAO.put(Invoice.class, invoiceDao);
         dbDAO.put(ProductGroup.class, productGroupDao);
         dbDAO.put(Product.class, productDao);

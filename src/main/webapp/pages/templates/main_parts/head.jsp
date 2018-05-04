@@ -17,4 +17,4 @@
     <script src="/bs_js/bootstrap.min.js"></script>
 
 </head>
-<body class="bodybg">
+<body class="bodybg" <%--onload="findPos()" onresize="findPos()"--%>>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/header.css">
 
-<div class="myheader border headerbg">
+<div class="myheader border headerbg" id="my-header">
 
     <div class="col-sm-offset-2 col-sm-7 tableHeader">
         <div class="row">
@@ -88,8 +88,17 @@
 
     </div>
 
+    <div  class="mylogo" id="my-logo">
+        <a href="/" style="display: block; width: 100%; height: 100%" title="На головну"></a>
+    </div>
+
 </div>
 
-<div class="mylogo">
-    <a href="/" style="display: block; width: 100%; height: 100%" title="На головну"></a>
-</div>
+<script>
+    // function findPos(){
+    //     let header = document.getElementById("my-header");
+    //     let logo = document.getElementById("my-logo");
+    //     logo.style.left = header.offsetLeft + 24 + "px";
+    //     logo.style.top = header.offsetTop - 19 + "px";
+    // }
+</script>
