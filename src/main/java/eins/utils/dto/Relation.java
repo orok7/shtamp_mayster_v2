@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Relation {
     Class<?> className() default Void.class;
-    String fieldName() default "theSame";
+    String fieldName() default "";
 }

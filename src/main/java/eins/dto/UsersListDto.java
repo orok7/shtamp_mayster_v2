@@ -11,21 +11,21 @@ import lombok.ToString;
 @ToString
 @Dto(appliedOnlyTo = User.class)
 public class UsersListDto {
-    @Relation(className = User.class, fieldName = "id")
+    @Relation
     private int id;
-    @Relation(className = User.class, fieldName = "username")
+    @Relation
     private String username;
-    @Relation(className = User.class, fieldName = "name")
+    @Relation
     private String name;
-    @Relation(className = User.class, fieldName = "role")
+    @Relation
     private Role role;
-    @Relation(className = User.class, fieldName = "discount")
+    @Relation
     private int discount;
-    @Relation(className = User.class, fieldName = "isCompany")
+    @Relation
     private boolean isCompany;
-    @Relation(className = User.class, fieldName = "email")
+    @Relation
     private String email;
-    @Relation(className = User.class, fieldName = "phoneNumber")
+    @Relation
     private String phoneNumber;
 
     private UsersListDto(){}
