@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,40 +31,51 @@ public class DtoUtils {
                     dtoType.getSimpleName());
             return null;
         }
-
         T dto = InstanceUtils.newInstance(dtoType);
+        getAnnotatedFields(dtoType).forEach(fieldInitialization(dtoType, entitiesMap, dto));
+        return dto;
+    }
 
-        getAnnotatedFields(dtoType).forEach(dtoField -> {
+    private static <T> Consumer<Field> fieldInitialization(Class<T> dtoType, Map<Class<?>, Object> entitiesMap, T dto) {
+        return dtoField -> {
             Relation annotation = dtoField.getAnnotation(Relation.class);
-            Class<?> appliedTo = annotation.className();
-            Class<?> appliedOnlyTo = getAppliedOnlyToParam(dtoType);
-            if (appliedOnlyTo != Void.class) {
-                if (appliedTo == Void.class) {
-                    appliedTo = appliedOnlyTo;
-                } else if (!appliedTo.equals(appliedOnlyTo)) {
-                    log.warn("{} was skipped because the entity type not the same to declared appliedOnlyTo parameter. Remove appliedOnlyTo parameter from @Dto", dtoField.getName());
-                    appliedTo = Void.class;
-                }
-            }
+            Class<?> appliedTo = getAppliedTo(dtoType, dtoField, annotation);
             Object o = entitiesMap.get(appliedTo);
             if (o == null) {
                 log.warn("No present entity with annotated type {}.", appliedTo.getSimpleName());
             } else {
-                String annotatedFieldName = annotation.fieldName();
-                String fieldName = !annotatedFieldName.isEmpty() ? annotatedFieldName : dtoField.getName();
-                try {
-                    Field entityField = o.getClass().getDeclaredField(fieldName);
-                    entityField.setAccessible(true);
-                    dtoField.setAccessible(true);
-                    dtoField.set(dto, entityField.get(o));
-                } catch (NoSuchFieldException e) {
-                    log.warn("Field {} not found.", fieldName);
-                } catch (IllegalAccessException e) {
-                    log.warn("Access exception. {}", e.getMessage());
-                }
+                setField(dto, dtoField, annotation, o);
             }
-        });
-        return dto;
+        };
+    }
+
+    private static <T> void setField(T dto, Field dtoField, Relation annotation, Object o) {
+        String annotatedFieldName = annotation.fieldName();
+        String fieldName = !annotatedFieldName.isEmpty() ? annotatedFieldName : dtoField.getName();
+        try {
+            Field entityField = o.getClass().getDeclaredField(fieldName);
+            entityField.setAccessible(true);
+            dtoField.setAccessible(true);
+            dtoField.set(dto, entityField.get(o));
+        } catch (NoSuchFieldException e) {
+            log.warn("Field {} not found.", fieldName);
+        } catch (IllegalAccessException e) {
+            log.warn("Access exception. {}", e.getMessage());
+        }
+    }
+
+    private static <T> Class<?> getAppliedTo(Class<T> dtoType, Field dtoField, Relation annotation) {
+        Class<?> appliedTo = annotation.className();
+        Class<?> appliedOnlyTo = getAppliedOnlyToParam(dtoType);
+        if (appliedOnlyTo != Void.class) {
+            if (appliedTo == Void.class) {
+                appliedTo = appliedOnlyTo;
+            } else if (!appliedTo.equals(appliedOnlyTo)) {
+                log.warn("{} was skipped because the entity type not the same to declared appliedOnlyTo parameter. Remove appliedOnlyTo parameter from @Dto", dtoField.getName());
+                appliedTo = Void.class;
+            }
+        }
+        return appliedTo;
     }
 
     private static <T> List<Field> getAnnotatedFields(Class<T> dtoType) {
