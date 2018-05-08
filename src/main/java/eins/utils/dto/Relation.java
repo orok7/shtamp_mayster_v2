@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Relation {
-    Class<?> className() default Void.class;
+    Class<?> appliedTo() default Void.class;
     String fieldName() default "";
 }

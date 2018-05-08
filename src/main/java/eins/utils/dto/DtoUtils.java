@@ -19,10 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class DtoUtils {
+
+    private static final Class<?> DEFAULT_VALUE_APPLIED_TO = Void.class;
 
     public static <T> T convertToDto(Class<T> dtoType, Object... entities) {
         Map<Class<?>, Object> entitiesMap = prepareEntitiesMap(entities);
@@ -32,55 +35,91 @@ public class DtoUtils {
             return null;
         }
         T dto = InstanceUtils.newInstance(dtoType);
-        getAnnotatedFields(dtoType).forEach(fieldInitialization(dtoType, entitiesMap, dto));
+        getAllFields(dtoType).forEach(fieldInitialization(dtoType, entitiesMap, dto));
         return dto;
+    }
+
+    public static <T> T convertToEntity(Class<T> entityType, Object dto) {
+        T entity = InstanceUtils.newInstance(entityType);
+        if (entity == null) {
+            return null;
+        }
+        getFieldsByEntityType(entityType, dto).forEach(dtoField -> setEntityField(entity, dtoField, dto));
+        return entity;
     }
 
     private static <T> Consumer<Field> fieldInitialization(Class<T> dtoType, Map<Class<?>, Object> entitiesMap, T dto) {
         return dtoField -> {
-            Relation annotation = dtoField.getAnnotation(Relation.class);
-            Class<?> appliedTo = getAppliedTo(dtoType, dtoField, annotation);
-            Object o = entitiesMap.get(appliedTo);
-            if (o == null) {
+            Class<?> appliedTo = getAppliedTo(dtoType, dtoField);
+            if (appliedTo.equals(DEFAULT_VALUE_APPLIED_TO)) {
+                log.warn("Field {} was skipped. @Relation.appliedTo needed for initialization.", dtoField.getName());
+                return;
+            }
+            Object entity = entitiesMap.get(appliedTo);
+            if (entity == null) {
                 log.warn("No present entity with annotated type {}.", appliedTo.getSimpleName());
             } else {
-                setField(dto, dtoField, annotation, o);
+                setDtoField(dto, dtoField, entity);
             }
         };
     }
 
-    private static <T> void setField(T dto, Field dtoField, Relation annotation, Object o) {
-        String annotatedFieldName = annotation.fieldName();
-        String fieldName = !annotatedFieldName.isEmpty() ? annotatedFieldName : dtoField.getName();
+    private static void setDtoField(Object dest, Field dtoField, Object source) {
+        String foundFieldName = getFoundFieldName(dtoField);
         try {
-            Field entityField = o.getClass().getDeclaredField(fieldName);
-            entityField.setAccessible(true);
-            dtoField.setAccessible(true);
-            dtoField.set(dto, entityField.get(o));
+            Field foudField = source.getClass().getDeclaredField(foundFieldName);
+            setField(dest, dtoField, source, foudField);
         } catch (NoSuchFieldException e) {
-            log.warn("Field {} not found.", fieldName);
+            log.warn("Field '{}' not found in {}.", foundFieldName, source.getClass().getName());
         } catch (IllegalAccessException e) {
             log.warn("Access exception. {}", e.getMessage());
         }
     }
 
-    private static <T> Class<?> getAppliedTo(Class<T> dtoType, Field dtoField, Relation annotation) {
-        Class<?> appliedTo = annotation.className();
-        Class<?> appliedOnlyTo = getAppliedOnlyToParam(dtoType);
-        if (appliedOnlyTo != Void.class) {
-            if (appliedTo == Void.class) {
-                appliedTo = appliedOnlyTo;
-            } else if (!appliedTo.equals(appliedOnlyTo)) {
-                log.warn("{} was skipped because the entity type not the same to declared appliedOnlyTo parameter. Remove appliedOnlyTo parameter from @Dto", dtoField.getName());
-                appliedTo = Void.class;
-            }
+    private static void setEntityField(Object dest, Field dtoField, Object source) {
+        String foundFieldName = getFoundFieldName(dtoField);
+        try {
+            Field foundField = dest.getClass().getDeclaredField(foundFieldName);
+            setField(dest, foundField, source, dtoField);
+        } catch (NoSuchFieldException e) {
+            log.warn("Field '{}' not found in {}.", foundFieldName, source.getClass().getName());
+        } catch (IllegalAccessException e) {
+            log.warn("Access exception. {}", e.getMessage());
         }
-        return appliedTo;
     }
 
-    private static <T> List<Field> getAnnotatedFields(Class<T> dtoType) {
+    private static void setField(Object dest, Field destField, Object source, Field sourceField)
+            throws IllegalAccessException {
+        sourceField.setAccessible(true);
+        destField.setAccessible(true);
+        destField.set(dest, sourceField.get(source));
+    }
+
+    private static String getFoundFieldName(Field dtoField) {
+        Relation annotation = dtoField.getAnnotation(Relation.class);
+        String fieldName = annotation != null ? annotation.fieldName() : "";
+        return !fieldName.isEmpty() ? fieldName : dtoField.getName();
+    }
+
+    private static Class<?> getAppliedTo(Class<?> dtoType, Field dtoField) {
+        Class<?> appliedToField = getAppliedToField(dtoField);
+        Class<?> appliedToClass = getAppliedToClass(dtoType);
+        if (appliedToField.equals(DEFAULT_VALUE_APPLIED_TO)) {
+            return appliedToClass;
+        }
+        return appliedToField;
+    }
+
+    private static Class<?> getAppliedToField(Field dtoField) {
+        return dtoField.isAnnotationPresent(Relation.class) ? dtoField.getAnnotation(Relation.class).appliedTo() : DEFAULT_VALUE_APPLIED_TO;
+    }
+
+    private static Class<?> getAppliedToClass(Class<?> dtoType) {
+        return dtoType.isAnnotationPresent(Dto.class) ? dtoType.getAnnotation(Dto.class).appliedTo() : DEFAULT_VALUE_APPLIED_TO;
+    }
+
+    private static List<Field> getAllFields(Class<?> dtoType) {
         return Arrays.stream(dtoType.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(Relation.class))
                 .collect(Collectors.toList());
     }
 
@@ -92,13 +131,15 @@ public class DtoUtils {
         return Arrays.stream(entities).collect(Collectors.toMap(Object::getClass, Function.identity()));
     }
 
-    private static Class<?> getAppliedOnlyToParam(Class<?> dtoType) {
-        Dto dtoTypeAnnotation = dtoType.getAnnotation(Dto.class);
-        if (dtoTypeAnnotation != null) {
-            return dtoTypeAnnotation.appliedOnlyTo();
-        } else {
-            return Void.class;
-        }
+    private static List<Field> getFieldsByEntityType(Class<?> entityType, Object dto) {
+        return Arrays.stream(dto.getClass().getDeclaredFields())
+                .filter(getFieldByEntityTypePredicate(entityType))
+                .collect(Collectors.toList());
+    }
+
+    private static Predicate<Field> getFieldByEntityTypePredicate(Class<?> entityType) {
+        return dtoField -> getAppliedToField(dtoField).equals(entityType) || getAppliedToClass(dtoField.getDeclaringClass())
+                .equals(entityType);
     }
 
 }

@@ -21,5 +21,9 @@ public class Demo {
             return;
         }
         System.out.println(someDto);
+        SomeEntity1 someEntity1 = DtoUtils.convertToEntity(SomeEntity1.class, someDto);
+        SomeEntity2 someEntity2 = DtoUtils.convertToEntity(SomeEntity2.class, someDto);
+        System.out.println(someEntity1);
+        System.out.println(someEntity2);
     }
 }

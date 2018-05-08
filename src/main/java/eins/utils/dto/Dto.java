@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Dto {
-    Class<?> appliedOnlyTo() default Void.class;
+    Class<?> appliedTo() default Void.class;
 }

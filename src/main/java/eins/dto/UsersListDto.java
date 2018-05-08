@@ -9,23 +9,15 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@Dto(appliedOnlyTo = User.class)
+@Dto(appliedTo = User.class)
 public class UsersListDto {
-    @Relation
     private int id;
-    @Relation
     private String username;
-    @Relation
     private String name;
-    @Relation
     private Role role;
-    @Relation
     private int discount;
-    @Relation
     private boolean isCompany;
-    @Relation
     private String email;
-    @Relation
     private String phoneNumber;
 
     private UsersListDto(){}
