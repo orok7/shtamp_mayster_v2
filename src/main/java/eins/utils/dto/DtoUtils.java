@@ -44,7 +44,7 @@ public class DtoUtils {
         if (entity == null) {
             return null;
         }
-        getFieldsByEntityType(entityType, dto).forEach(dtoField -> setEntityField(entity, dtoField, dto));
+        getFieldsByEntityType(entityType, dto).forEach(dtoField -> setEntityField(dto, dtoField, entity));
         return entity;
     }
 
@@ -64,35 +64,40 @@ public class DtoUtils {
         };
     }
 
-    private static void setDtoField(Object dest, Field dtoField, Object source) {
+    private static void setDtoField(Object dto, Field dtoField, Object entity) {
+        Field entityField = getFoundField(dtoField, entity);
+        if (entityField == null) {
+            return;
+        }
+        copyField(dto, dtoField, entity, entityField);
+    }
+
+    private static void setEntityField(Object dto, Field dtoField, Object entity) {
+        Field entityField = getFoundField(dtoField, entity);
+        if (entityField == null) {
+            return;
+        }
+        copyField(entity, entityField, dto, dtoField);
+    }
+
+    private static Field getFoundField(Field dtoField, Object entity) {
         String foundFieldName = getFoundFieldName(dtoField);
         try {
-            Field foudField = source.getClass().getDeclaredField(foundFieldName);
-            setField(dest, dtoField, source, foudField);
+            return entity.getClass().getDeclaredField(foundFieldName);
         } catch (NoSuchFieldException e) {
-            log.warn("Field '{}' not found in {}.", foundFieldName, source.getClass().getName());
-        } catch (IllegalAccessException e) {
-            log.warn("Access exception. {}", e.getMessage());
+            log.warn("Field '{}' not found in {}.", foundFieldName, entity.getClass().getName());
+            return null;
         }
     }
 
-    private static void setEntityField(Object dest, Field dtoField, Object source) {
-        String foundFieldName = getFoundFieldName(dtoField);
+    private static void copyField(Object dest, Field destField, Object source, Field sourceField) {
         try {
-            Field foundField = dest.getClass().getDeclaredField(foundFieldName);
-            setField(dest, foundField, source, dtoField);
-        } catch (NoSuchFieldException e) {
-            log.warn("Field '{}' not found in {}.", foundFieldName, source.getClass().getName());
+            sourceField.setAccessible(true);
+            destField.setAccessible(true);
+            destField.set(dest, sourceField.get(source));
         } catch (IllegalAccessException e) {
             log.warn("Access exception. {}", e.getMessage());
         }
-    }
-
-    private static void setField(Object dest, Field destField, Object source, Field sourceField)
-            throws IllegalAccessException {
-        sourceField.setAccessible(true);
-        destField.setAccessible(true);
-        destField.set(dest, sourceField.get(source));
     }
 
     private static String getFoundFieldName(Field dtoField) {
@@ -111,35 +116,37 @@ public class DtoUtils {
     }
 
     private static Class<?> getAppliedToField(Field dtoField) {
-        return dtoField.isAnnotationPresent(Relation.class) ? dtoField.getAnnotation(Relation.class).appliedTo() : DEFAULT_VALUE_APPLIED_TO;
+        return dtoField.isAnnotationPresent(Relation.class) ?
+                dtoField.getAnnotation(Relation.class).appliedTo() :
+                DEFAULT_VALUE_APPLIED_TO;
     }
 
     private static Class<?> getAppliedToClass(Class<?> dtoType) {
-        return dtoType.isAnnotationPresent(Dto.class) ? dtoType.getAnnotation(Dto.class).appliedTo() : DEFAULT_VALUE_APPLIED_TO;
+        return dtoType.isAnnotationPresent(Dto.class) ?
+                dtoType.getAnnotation(Dto.class).appliedTo() :
+                DEFAULT_VALUE_APPLIED_TO;
     }
 
     private static List<Field> getAllFields(Class<?> dtoType) {
-        return Arrays.stream(dtoType.getDeclaredFields())
-                .collect(Collectors.toList());
+        return Arrays.asList(dtoType.getDeclaredFields());
     }
 
     private static Map<Class<?>, Object> prepareEntitiesMap(Object... entities) {
-        if (entities == null
-                || Arrays.stream(entities).map(Object::getClass).distinct().count() != entities.length) {
+        if (entities == null || Arrays.stream(entities).map(Object::getClass).distinct().count() != entities.length) {
             return null;
         }
         return Arrays.stream(entities).collect(Collectors.toMap(Object::getClass, Function.identity()));
     }
 
     private static List<Field> getFieldsByEntityType(Class<?> entityType, Object dto) {
-        return Arrays.stream(dto.getClass().getDeclaredFields())
-                .filter(getFieldByEntityTypePredicate(entityType))
+        return Arrays.stream(dto.getClass().getDeclaredFields()).filter(getFieldByEntityTypePredicate(entityType))
                 .collect(Collectors.toList());
     }
 
     private static Predicate<Field> getFieldByEntityTypePredicate(Class<?> entityType) {
-        return dtoField -> getAppliedToField(dtoField).equals(entityType) || getAppliedToClass(dtoField.getDeclaringClass())
-                .equals(entityType);
+        return dtoField -> getAppliedToField(dtoField).equals(entityType)
+                || getAppliedToField(dtoField).equals(DEFAULT_VALUE_APPLIED_TO) && getAppliedToClass(
+                dtoField.getDeclaringClass()).equals(entityType);
     }
 
 }
