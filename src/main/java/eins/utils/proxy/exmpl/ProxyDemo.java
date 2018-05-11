@@ -1,5 +1,7 @@
 package eins.utils.proxy.exmpl;
 
+import eins.utils.proxy.ProxyFactory;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -12,12 +14,12 @@ public class ProxyDemo {
         Object proxyInstance =  Proxy
                 .newProxyInstance(ProxyDemo.class.getClassLoader(), new Class[] { ArithmeticOperations.class }, myProxy);
 
-
+        ArithmeticOperations proxy = ProxyFactory.createProxy(ArithmeticOperations.class, myProxy);
 
         System.out.println(((ArithmeticOperations)proxyInstance).add(1, 1));
         System.out.println(((ArithmeticOperations)proxyInstance).sub(1, 1));
-        System.out.println(((ArithmeticOperations)proxyInstance).mul(1, 1));
-        System.out.println(((ArithmeticOperations)proxyInstance).div(1, 1));
+        System.out.println(proxy.mul(1, 1));
+        System.out.println(proxy.div(1, 1));
     }
 
     interface ArithmeticOperations {
