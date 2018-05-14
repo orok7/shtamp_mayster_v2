@@ -36,7 +36,7 @@ public class OrderController {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie: cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
+                long id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
                 if (id == prodId) {
                     cookie.setMaxAge(0);
                     cookie.setPath("/");
@@ -123,7 +123,7 @@ public class OrderController {
         List<ProductToBuy> productToBuy = new ArrayList<>();
         for (Cookie cookie : cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
+                long id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
                 int num = Integer.valueOf(cookie.getValue());
                 ProductToBuy pB = new ProductToBuy();
                 pB.setProduct(pService.findOne(id));

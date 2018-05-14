@@ -8,7 +8,7 @@ public interface DbService {
 
 //    void save(Map<String, String> map, Class<?> clazz) throws Exception;
 
-    Object findOne(int id, Class<?> clazz);
+    Object findOne(long id, Class<?> clazz);
 
     List<Object> findAll(Class<?> clazz);
 

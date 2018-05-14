@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductDao extends JpaRepository<Product,Integer> {
+public interface ProductDao extends JpaRepository<Product, Long> {
 
 //    SELECT * FROM product WHERE product.name LIKE '%австрія%' OR description LIKE '%австрія%';
     @Query("select p from Product p where p.name like :searchThis or p.description like :searchThis")
@@ -17,7 +17,7 @@ public interface ProductDao extends JpaRepository<Product,Integer> {
     List<Product> findAllWithGroups();
 
     @Query("select p from Product p left outer join fetch p.group where p.id=:id")
-    Product findOneWithGroup(@Param("id") int id);
+    Product findOneWithGroup(@Param("id") long id);
 
     List<Product> findAllByGroupName(String name);
 

@@ -22,7 +22,7 @@ public class ProductToBuyServiceImpl implements ProductToBuyService {
     }
 
     @Override
-    public ProductToBuy findOne(int id) {
+    public ProductToBuy findOne(long id) {
         return dbDAO.findOne(id);
     }
 

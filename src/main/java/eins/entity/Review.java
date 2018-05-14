@@ -15,11 +15,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "review")
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class Review extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private User user;
 

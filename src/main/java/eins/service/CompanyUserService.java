@@ -8,7 +8,7 @@ public interface CompanyUserService {
 
     void save(CompanyUser o);
 
-    CompanyUser findOne(int id);
+    CompanyUser findOne(long id);
 
     List<CompanyUser> findAll();
 

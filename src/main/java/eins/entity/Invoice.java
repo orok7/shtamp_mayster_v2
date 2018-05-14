@@ -18,11 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "invoice")
-public class Invoice {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class Invoice extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private User buyer;
 

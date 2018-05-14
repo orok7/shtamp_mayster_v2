@@ -23,7 +23,7 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public Object findOne(int id, Class<?> clazz) {
+    public Object findOne(long id, Class<?> clazz) {
         initMyDAOMap();
         return dbDAO.get(clazz).findOne(id);
     }

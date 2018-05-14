@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @Dto(appliedTo = User.class)
 public class UsersListDto {
-    private int id;
+    private long id;
     private String username;
     private String name;
     private Role role;

@@ -13,11 +13,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_group")
-public class ProductGroup {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class ProductGroup extends AbstractEntity {
     private String name;
+
+    public ProductGroup(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
 }

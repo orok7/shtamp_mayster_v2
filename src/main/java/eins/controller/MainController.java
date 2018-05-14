@@ -27,7 +27,7 @@ public class MainController {
     }
 
     @GetMapping("/main/productPage{id}")
-    public String productPage(@PathVariable("id") int id,
+    public String productPage(@PathVariable("id") long id,
                               Model model){
 
         Product product = pService.findOne(id);

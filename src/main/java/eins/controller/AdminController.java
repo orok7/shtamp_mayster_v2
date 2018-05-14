@@ -43,7 +43,7 @@ public class AdminController {
                               @RequestParam String descriptionProduct,
                               @RequestParam MultipartFile picture,
                               Model model) throws IOException {
-        int id = 0;
+        long id = 0;
         try {
             id = Integer.valueOf(idProduct);
         } catch (NumberFormatException e) {
@@ -155,7 +155,7 @@ public class AdminController {
     }
 
     @PostMapping("/saveInvoice{id}")
-    public String saveInvoice(@PathVariable("id") int id,
+    public String saveInvoice(@PathVariable("id") long id,
                               @RequestParam String odPayed,
                               @RequestParam String odInvoicePaymentTypes,
                               @RequestParam String odInvoiceStatus) {
@@ -170,7 +170,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyInvoice{id}")
-    public String modifyInvoice(@PathVariable("id") int id,
+    public String modifyInvoice(@PathVariable("id") long id,
                                 Model model) {
         Invoice invoice = invoiceService.findOneWithProducts(id);
         model.addAttribute("invoiceProducts", invoice.getProducts());
@@ -179,7 +179,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyUser{id}")
-    public String modifyUser(@PathVariable("id") int id, Model model) {
+    public String modifyUser(@PathVariable("id") long id, Model model) {
 
         model.addAttribute("user", uService.findOneWithCompanyData(id));
         return "userDetails";
@@ -198,7 +198,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyProduct{id}")
-    public String modifyProduct(@PathVariable("id") int id, Model model) {
+    public String modifyProduct(@PathVariable("id") long id, Model model) {
 
         Product product = pService.findOneWithGroup(id);
 
@@ -218,7 +218,7 @@ public class AdminController {
     }
 
     @GetMapping("/removeProduct{id}")
-    public String removeProduct(@PathVariable("id") int id) {
+    public String removeProduct(@PathVariable("id") long id) {
         pService.remove(id);
         return "redirect:/admin/listProduct";
     }
@@ -227,7 +227,7 @@ public class AdminController {
     public String saveProductGroup(@RequestParam String nameProductGroup,
                                    @RequestParam String idProductGroup,
                                    Model model) {
-        int id = 0;
+        long id = 0;
         try {
             id = Integer.valueOf(idProductGroup);
         } catch (NumberFormatException e) {
@@ -254,14 +254,14 @@ public class AdminController {
     }
 
     @GetMapping("/modifyProductGroup{id}")
-    public String modifyProductGroup(@PathVariable("id") int id, Model model) {
+    public String modifyProductGroup(@PathVariable("id") long id, Model model) {
         model.addAttribute("productGroupId", id);
         model.addAttribute("productGroupName", pgService.findOne(id).getName());
         return "/newProductGroup";
     }
 
     @GetMapping("/removeProductGroup{id}")
-    public String removeProductGroup(@PathVariable("id") int id) {
+    public String removeProductGroup(@PathVariable("id") long id) {
         pgService.remove(id);
         return "redirect:/admin/listProductGroup";
     }

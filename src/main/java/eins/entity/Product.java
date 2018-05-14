@@ -16,11 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class Product extends AbstractEntity{
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private ProductGroup group;
 

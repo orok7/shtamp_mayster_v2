@@ -14,12 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class User extends AbstractEntity implements UserDetails {
     @Column(unique = true)
     private String username;
 
@@ -116,14 +111,6 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setUsername(String username) {

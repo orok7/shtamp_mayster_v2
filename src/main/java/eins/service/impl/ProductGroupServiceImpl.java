@@ -22,12 +22,12 @@ public class ProductGroupServiceImpl implements ProductGroupService {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(long id) {
         dbDAO.delete(id);
     }
 
     @Override
-    public ProductGroup findOne(int id) {
+    public ProductGroup findOne(long id) {
         return dbDAO.findOne(id);
     }
 

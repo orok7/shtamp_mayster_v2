@@ -9,15 +9,15 @@ public interface ProductService {
 
     void save(Product o);
 
-    void remove(int id);
+    void remove(long id);
 
-    Product findOne(int id);
+    Product findOne(long id);
 
     List<Product> findAll();
 
     List<Product> findAllWithGroups();
 
-    Product findOneWithGroup(int id);
+    Product findOneWithGroup(long id);
 
     List<Product> findAllByProductGroupName(String name);
 

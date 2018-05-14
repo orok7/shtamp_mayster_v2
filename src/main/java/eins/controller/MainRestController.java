@@ -42,7 +42,7 @@ public class MainRestController {
         int prodId = Integer.valueOf(prod_id);
         for (Cookie cookie: cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
+                long id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
                 if (id == prodId) {
                     num += Integer.valueOf(cookie.getValue());
                     cookie.setValue(""+num);

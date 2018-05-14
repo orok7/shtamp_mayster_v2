@@ -8,9 +8,9 @@ public interface ProductGroupService {
 
     void save(ProductGroup o);
 
-    void remove(int id);
+    void remove(long id);
 
-    ProductGroup findOne(int id);
+    ProductGroup findOne(long id);
 
     List<ProductGroup> findAll();
 

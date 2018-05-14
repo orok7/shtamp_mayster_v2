@@ -13,12 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "company_user")
-public class CompanyUser{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class CompanyUser extends AbstractEntity{
     private String ownership;
 
     @Column(name = "full_name")
@@ -29,4 +24,11 @@ public class CompanyUser{
 
     private String code;
 
+    public CompanyUser(Long id, String ownership, String fullName, String shortName, String code) {
+        super(id);
+        this.ownership = ownership;
+        this.fullName = fullName;
+        this.shortName = shortName;
+        this.code = code;
+    }
 }

@@ -22,12 +22,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(long id) {
         dbDAO.delete(id);
     }
 
     @Override
-    public Product findOne(int id) {
+    public Product findOne(long id) {
         return dbDAO.findOne(id);
     }
 
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findOneWithGroup(int id) {
+    public Product findOneWithGroup(long id) {
         return dbDAO.findOneWithGroup(id);
     }
 

@@ -8,13 +8,13 @@ public interface ReviewService {
 
     void save(Review o);
 
-    Review findOne(int id);
+    Review findOne(long id);
 
     List<Review> findAll();
 
-    List<Review> findAllByProductId(int id);
+    List<Review> findAllByProductId(long id);
 
-    List<Review> findAllByProductIdWithUsers(int id);
+    List<Review> findAllByProductIdWithUsers(long id);
 
     List<Review> findAllByUserUsername(String username);
 

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(long id) {
         uDAO.delete(id);
     }
 
@@ -40,12 +40,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findOne(int id) {
+    public User findOne(long id) {
         return uDAO.findOne(id);
     }
 
     @Override
-    public User findOneWithCompanyData(int id) {
+    public User findOneWithCompanyData(long id) {
         return uDAO.findOneWithCompanyData(id);
     }
 

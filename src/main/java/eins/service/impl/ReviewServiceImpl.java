@@ -22,7 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review findOne(int id) {
+    public Review findOne(long id) {
         return dbDAO.findOne(id);
     }
 
@@ -32,12 +32,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllByProductId(int id) {
+    public List<Review> findAllByProductId(long id) {
         return dbDAO.findAllByProductId(id);
     }
 
     @Override
-    public List<Review> findAllByProductIdWithUsers(int id) {
+    public List<Review> findAllByProductIdWithUsers(long id) {
         return dbDAO.findAllByProductIdWithUsers(id);
     }
 

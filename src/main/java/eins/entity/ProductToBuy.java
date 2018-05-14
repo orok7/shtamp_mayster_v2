@@ -13,11 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_to_buy")
-public class ProductToBuy{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class ProductToBuy extends AbstractEntity{
     @OneToOne(fetch = FetchType.LAZY)
     private Product product;
 
