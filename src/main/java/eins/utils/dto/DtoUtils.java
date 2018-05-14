@@ -12,7 +12,9 @@ package eins.utils.dto;
 
 import eins.utils.reflect.InstanceUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.SerializationUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -104,10 +106,18 @@ public class DtoUtils {
         try {
             sourceField.setAccessible(true);
             destField.setAccessible(true);
-            destField.set(dest, sourceField.get(source));
+            if (Serializable.class.isAssignableFrom(destField.getType())) {
+                destField.set(dest, cloneObjectUsingSerialization(sourceField.get(source)));
+            } else {
+                destField.set(dest, sourceField.get(source));
+            }
         } catch (IllegalAccessException e) {
             log.warn("Access exception. {}", e.getMessage());
         }
+    }
+
+    private static Object cloneObjectUsingSerialization(Object object) {
+        return SerializationUtils.deserialize(SerializationUtils.serialize(object));
     }
 
     private static String getFoundFieldName(Field dtoField) {

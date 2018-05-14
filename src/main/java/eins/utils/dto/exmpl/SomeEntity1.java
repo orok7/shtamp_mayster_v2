@@ -15,11 +15,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SomeEntity1 {
+public class SomeEntity1 implements Serializable {
     private String city;
     private String street;
 }

@@ -13,18 +13,21 @@ package eins.utils.dto.exmpl;
 import eins.utils.dto.DataTransferObject;
 import eins.utils.dto.Dto;
 import eins.utils.dto.Relation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
+@Getter
+@Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Dto(appliedTo = SomeEntity2.class)
 public class SomeDto implements DataTransferObject {
-//    @Relation(appliedTo = SomeEntity1.class, fieldName = "city")
     @Relation(appliedTo = SomeEntity1.class)
     private String city;
-//    @Relation(appliedTo = SomeEntity2.class, fieldName = "name")
-//    @Relation(appliedTo = SomeEntity2.class)
-//    @Relation(fieldName = "name")
     private String name;
-
-    private SomeDto(){};
+    private SomeEntity1 someEntity1;
 }

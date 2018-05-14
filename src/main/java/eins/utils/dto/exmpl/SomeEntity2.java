@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SomeEntity2 {
+public class SomeEntity2{
     private String name;
     private SomeEntity1 someEntity1;
 }
