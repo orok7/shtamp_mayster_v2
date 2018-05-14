@@ -82,12 +82,22 @@ public class DtoUtils {
 
     private static Field getFoundField(Field dtoField, Object entity) {
         String foundFieldName = getFoundFieldName(dtoField);
-        try {
-            return entity.getClass().getDeclaredField(foundFieldName);
-        } catch (NoSuchFieldException e) {
-            log.warn("Field '{}' not found in {}.", foundFieldName, entity.getClass().getName());
-            return null;
+        Class<?> entityClass = entity.getClass();
+        while (entityClass != null && !isFieldPresent(entityClass, foundFieldName)) {
+            entityClass = entityClass.getSuperclass();
         }
+        if (entityClass != null) {
+            try {
+                return entityClass.getDeclaredField(foundFieldName);
+            } catch (NoSuchFieldException ignored) {
+            }
+        }
+        log.warn("Field '{}' not found in {} and in its superclasses.", foundFieldName, entity.getClass().getName());
+        return null;
+    }
+
+    private static boolean isFieldPresent(Class<?> type, String fieldName) {
+        return Arrays.stream(type.getDeclaredFields()).anyMatch(field -> field.getName().equals(fieldName));
     }
 
     private static void copyField(Object dest, Field destField, Object source, Field sourceField) {
