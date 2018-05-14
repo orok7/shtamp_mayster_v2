@@ -3,7 +3,6 @@ package eins.dto;
 import eins.entity.User;
 import eins.entity.enums.Role;
 import eins.utils.dto.Dto;
-import eins.utils.dto.Relation;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -19,8 +18,6 @@ public class UsersListDto {
     private boolean isCompany;
     private String email;
     private String phoneNumber;
-
-    private UsersListDto(){}
 }
 
 
