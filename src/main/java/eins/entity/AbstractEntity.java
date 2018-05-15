@@ -1,8 +1,6 @@
 package eins.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
@@ -19,10 +17,9 @@ public class AbstractEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public AbstractEntity() {
-    }
+    protected AbstractEntity() {}
 
-    public AbstractEntity(Long id) {
+    protected AbstractEntity(Long id) {
         this.id = id;
     }
 }

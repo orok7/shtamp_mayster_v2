@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "review")
 public class Review extends AbstractEntity {

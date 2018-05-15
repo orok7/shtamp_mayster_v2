@@ -4,20 +4,13 @@ import eins.utils.proxy.ProxyFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 public class ProxyDemo {
 
     public static void main(String[] args) {
-        MyProxy myProxy = new MyProxy(new Calculator());
-
-        Object proxyInstance =  Proxy
-                .newProxyInstance(ProxyDemo.class.getClassLoader(), new Class[] { ArithmeticOperations.class }, myProxy);
-
-        ArithmeticOperations proxy = ProxyFactory.createProxy(ArithmeticOperations.class, myProxy);
-
-        System.out.println(((ArithmeticOperations)proxyInstance).add(1, 1));
-        System.out.println(((ArithmeticOperations)proxyInstance).sub(1, 1));
+        ArithmeticOperationHandler arithmeticOperationHandler = new ArithmeticOperationHandler(new Calculator());
+        ArithmeticOperations proxy = ProxyFactory.createProxy(ArithmeticOperations.class, arithmeticOperationHandler);
+        if (proxy == null) return;
         System.out.println(proxy.mul(1, 1));
         System.out.println(proxy.div(1, 1));
     }
@@ -32,10 +25,10 @@ public class ProxyDemo {
         double div(double x, double y);
     }
 
-    static class MyProxy implements InvocationHandler {
+    static class ArithmeticOperationHandler implements InvocationHandler {
         private Calculator calculator;
 
-        public MyProxy(Calculator calculator) {
+        public ArithmeticOperationHandler(Calculator calculator) {
             this.calculator = calculator;
         }
 

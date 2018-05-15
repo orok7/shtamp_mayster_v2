@@ -1,6 +1,6 @@
 package eins.resource;
 
-import eins.dto.UsersListDto;
+import eins.dto.UserDto;
 import eins.entity.Product;
 import eins.entity.User;
 import eins.service.InvoiceService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +35,11 @@ public class AdminResource {
     }
 
     @GetMapping("/getUsers")
-    public List<UsersListDto> getUsers() {
+    public List<UserDto> getUsers() {
         List<User> users = uService.findAll();
         if (users == null) return null;
         return users.stream()
-                .map(user -> DtoUtils.convertToDto(UsersListDto.class, user))
+                .map(user -> DtoUtils.convertToDto(UserDto.class, user))
                 .collect(Collectors.toList());
     }
 

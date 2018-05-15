@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Dto(appliedTo = User.class)
-public class UsersListDto {
+public class UserDto {
     private long id;
     private String username;
     private String name;
