@@ -1,0 +1,1 @@
+alter table smdb_main.user alter column timestamp_of_pass_rec type timestamp using timestamp_of_pass_rec::timestamp;

@@ -7,10 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserDao extends JpaRepository<User,Integer> {
+public interface UserDao extends JpaRepository<User, Long> {
 
     @Query("select u from User u left outer join fetch u.companyData where u.id=:id")
-    User findOneWithCompanyData(@Param("id") int id);
+    User findOneWithCompanyData(@Param("id") Long id);
 
     User findByUsername(String username);
 

@@ -37,8 +37,8 @@ public class SessionUtils {
         if (session == null) return null;
         LanguageEnum language = (LanguageEnum) session.getAttribute(LANGUAGE_ATTR);
         if (language == null) {
-            session.setAttribute(LANGUAGE_ATTR, LanguageEnum.ENG);
-            return LanguageEnum.ENG;
+            session.setAttribute(LANGUAGE_ATTR, LanguageEnum.UA);
+            return LanguageEnum.UA;
         }
         return language;
     }

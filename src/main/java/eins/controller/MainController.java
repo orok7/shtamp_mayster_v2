@@ -27,13 +27,13 @@ public class MainController {
     }
 
     @GetMapping("/main/productPage{id}")
-    public String productPage(@PathVariable("id") int id,
+    public String productPage(@PathVariable("id") long id,
                               Model model){
 
         Product product = pService.findOne(id);
 
         List<Review> reviews = reviewService.findAllByProductIdWithUsers(id);
-        double sum = reviews.stream().mapToDouble(o -> o.getRating()).sum();
+        double sum = reviews.stream().mapToDouble(Review::getRating).sum();
         int size = reviews.size();
         double avrgRating = (size == 0) ? 0 : (sum / size);
         product.setRating(avrgRating);
@@ -55,11 +55,11 @@ public class MainController {
         String userName = (principal == null) ? "anonymous" : principal.getName();
         User user = uService.findByUsername(userName);
 
-        Product product = pService.findOne(Integer.valueOf(prodId));
+        Product product = pService.findOne(Long.valueOf(prodId));
 
         Double rating = Double.valueOf(ratingVal);
 
-        int num = product.getNumberOfRatings();
+        long num = product.getNumberOfRatings();
         double avrRating = (product.getRating() * num + rating) / (num + 1);
         product.setRating(avrRating);
         product.setNumberOfRatings(num + 1);

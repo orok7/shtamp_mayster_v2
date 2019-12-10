@@ -22,7 +22,7 @@ public class CompanyUserServiceImpl implements CompanyUserService {
     }
 
     @Override
-    public CompanyUser findOne(int id) {
+    public CompanyUser findOne(Long id) {
         return dbDAO.findOne(id);
     }
 

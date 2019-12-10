@@ -12,16 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_to_buy")
+@Table(name = "product_to_buy", schema = "smdb_main")
 public class ProductToBuy{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "product_to_buy_id")
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
     private int number;

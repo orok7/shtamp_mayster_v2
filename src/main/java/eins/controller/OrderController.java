@@ -36,7 +36,7 @@ public class OrderController {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie: cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
+                long id = Long.parseLong(cookie.getName().split("prodid_")[1]);
                 if (id == prodId) {
                     cookie.setMaxAge(0);
                     cookie.setPath("/");
@@ -57,8 +57,7 @@ public class OrderController {
     @GetMapping("/newOrder")
     public String newOrder(HttpServletRequest request, Model model){
         model.addAttribute("listProd", getProductsToBuy(request));
-        String[] paymentTypes = (String[]) Arrays.stream(PaymentType.values()).map(PaymentType::toString).toArray();
-        model.addAttribute("paymentTypes", paymentTypes);
+        model.addAttribute("paymentTypes", PaymentType.values());
         return "newOrder";
     }
 
@@ -66,7 +65,7 @@ public class OrderController {
     public String addOrder(@RequestParam(required = false) String odName,
                            @RequestParam(required = false) String odSurname,
                            @RequestParam(required = false) String odPhoneNumber,
-                           @RequestParam String odInvoicePaymentTypes,
+                           @RequestParam PaymentType odInvoicePaymentTypes,
                            @RequestParam String odNotes,
                            HttpServletRequest request,
                            HttpServletResponse response,
@@ -84,10 +83,10 @@ public class OrderController {
         invoice.setBuyer(user);
         invoice.setDate(new Date());
         invoice.setNote(odNotes);
-        invoice.setPaymentType(PaymentType.valueOf(odInvoicePaymentTypes));
+        invoice.setPaymentType(odInvoicePaymentTypes);
         double sum = 0;
         for (ProductToBuy pb : listPB) sum += pb.getProduct().getPrice()*pb.getNumber();
-        invoice.setSum(sum-(user.getDiscount()*sum));
+        invoice.setSum(sum - (((double) user.getDiscount() / 100) * sum));
 
         invoiceService.save(invoice);
 
@@ -123,8 +122,8 @@ public class OrderController {
         List<ProductToBuy> productToBuy = new ArrayList<>();
         for (Cookie cookie : cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
-                int num = Integer.valueOf(cookie.getValue());
+                long id = Long.parseLong(cookie.getName().split("prodid_")[1]);
+                int num = Integer.parseInt(cookie.getValue());
                 ProductToBuy pB = new ProductToBuy();
                 pB.setProduct(pService.findOne(id));
                 pB.setNumber(num);

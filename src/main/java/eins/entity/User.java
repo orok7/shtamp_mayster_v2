@@ -13,12 +13,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "smdb_main")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "user_id")
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -57,13 +58,17 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
+    @Column(name = "first_name")
     private String name;
 
+    @Column(name = "last_name")
     private String surname;
 
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "company_data_id")
     private CompanyUser companyData;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer", cascade = CascadeType.MERGE)
@@ -118,11 +123,11 @@ public class User implements UserDetails {
         return password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

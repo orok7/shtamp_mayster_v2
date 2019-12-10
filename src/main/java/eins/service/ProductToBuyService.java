@@ -8,7 +8,7 @@ public interface ProductToBuyService {
 
     void save(ProductToBuy o);
 
-    ProductToBuy findOne(int id);
+    ProductToBuy findOne(Long id);
 
     List<ProductToBuy> findAll();
 

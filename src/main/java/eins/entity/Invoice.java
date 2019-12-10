@@ -17,13 +17,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "invoice")
+@Table(name = "invoice", schema = "smdb_main")
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "invoice_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "customer_id")
     private User buyer;
 
     private Date date;
@@ -35,12 +37,12 @@ public class Invoice {
 
     private String note;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private InvoiceStatus status = InvoiceStatus.DRAFT;
 
     private double payed;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_type")
     private PaymentType paymentType = PaymentType.CASH_ON_DELIVERY;
 }

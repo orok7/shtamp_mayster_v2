@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface InvoiceDao extends JpaRepository<Invoice,Integer> {
+public interface InvoiceDao extends JpaRepository<Invoice, Long> {
 
     @Query("select i from Invoice i left outer join fetch i.buyer")
     List<Invoice> findAllWithBuyer();
 
-    List<Invoice> findAllByBuyerId(int id);
+    List<Invoice> findAllByBuyerId(Long id);
 
 }

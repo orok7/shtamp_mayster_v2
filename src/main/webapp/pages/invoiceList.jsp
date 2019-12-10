@@ -37,7 +37,7 @@
                                               selected
                                         </c:if>
                                         value="${paymentType}">
-                                        ${paymentType.id}
+                                        ${paymentType.getDescription()}
                                 </option>
                             </c:forEach>
                         </select></td>
@@ -48,7 +48,7 @@
                                 selected
                             </c:if>
                                     value="${status}">
-                                    ${status.id}
+                                    ${status.getDescription()}
                             </option>
                         </c:forEach>
                     </select></td>

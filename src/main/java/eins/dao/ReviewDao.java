@@ -7,12 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReviewDao extends JpaRepository<Review, Integer> {
+public interface ReviewDao extends JpaRepository<Review, Long> {
 
-    List<Review> findAllByProductId(int id);
+    List<Review> findAllByProductId(Long id);
 
     @Query("select r from Review r left outer join fetch r.user where r.product.id=:id")
-    List<Review> findAllByProductIdWithUsers(@Param("id") int id);
+    List<Review> findAllByProductIdWithUsers(@Param("id") Long id);
 
     List<Review> findAllByUserUsername(String username);
 

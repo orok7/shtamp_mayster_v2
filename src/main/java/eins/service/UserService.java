@@ -9,13 +9,13 @@ public interface UserService extends UserDetailsService {
 
     void save(User user);
 
-    void remove(int id);
+    void remove(Long id);
 
     void save(User user, CompanyUser companyUser);
 
-    User findOne(int id);
+    User findOne(Long id);
 
-    User findOneWithCompanyData(int id);
+    User findOneWithCompanyData(Long id);
 
     User findByUsername(String username);
 

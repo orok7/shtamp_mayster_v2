@@ -12,7 +12,7 @@ import lombok.ToString;
 @Dto(appliedOnlyTo = User.class)
 public class UsersListDto {
     @Relation(className = User.class, fieldName = "id")
-    private int id;
+    private Long id;
     @Relation(className = User.class, fieldName = "username")
     private String username;
     @Relation(className = User.class, fieldName = "name")

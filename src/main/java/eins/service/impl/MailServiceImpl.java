@@ -29,11 +29,10 @@ public class MailServiceImpl implements MailService {
                     "Otherwise, you can tap <a href=\""+link+"\">here</a> to set a new password."+
                     "Please remember that this link is valid only " + min + " minutes.<br>" +
                     "Thank you for using our service!", true);
-        } catch (MessagingException e) {
+            javaMailSender.send(message);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        javaMailSender.send(message);
 
     }
 
@@ -46,11 +45,10 @@ public class MailServiceImpl implements MailService {
             helper.setTo(new InternetAddress(email));
             helper.setSubject(subject);
             helper.setText(text, true);
-        } catch (MessagingException e) {
+            javaMailSender.send(message);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        javaMailSender.send(message);
 
     }
 }

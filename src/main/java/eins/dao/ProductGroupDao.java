@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ProductGroupDao extends JpaRepository<ProductGroup,Integer> {
+public interface ProductGroupDao extends JpaRepository<ProductGroup, Long> {
 
     @Query("select pg from ProductGroup pg order by pg.name")
     List<ProductGroup> findAllOrderByName();

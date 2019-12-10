@@ -32,7 +32,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice findOne(int id) {
+    public Invoice findOne(Long id) {
         return dbDAO.findOne(id);
     }
 
@@ -42,12 +42,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<Invoice> findAllByBuyerId(int id) {
+    public List<Invoice> findAllByBuyerId(Long id) {
         return dbDAO.findAllByBuyerId(id);
     }
 
     @Override
-    public List<Invoice> findAllWithProductsByBuyerId(int id) {
+    public List<Invoice> findAllWithProductsByBuyerId(Long id) {
         return findAllWithProducts(dbDAO.findAllByBuyerId(id));
     }
 
@@ -57,7 +57,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice findOneWithProducts(int id) {
+    public Invoice findOneWithProducts(Long id) {
         Invoice invoice = dbDAO.findOne(id);
         List<ProductToBuy> listPB = pbService.findAll();
 

@@ -15,13 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema = "smdb_main")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "product_id")
+    private Long id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_group_id")
     private ProductGroup group;
 
     @Column(unique = true)
@@ -29,7 +31,8 @@ public class Product {
 
     private String name;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "measurement_units")
     private MeasurementUnits measurementUnits = MeasurementUnits.PCS;
 
     private double price;
@@ -42,7 +45,7 @@ public class Product {
     private double rating;
 
     @Column(name = "number_of_ratings")
-    private int numberOfRatings;
+    private long numberOfRatings;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.MERGE)
     private List<Review> reviews = new ArrayList<>();

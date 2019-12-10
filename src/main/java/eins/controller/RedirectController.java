@@ -19,11 +19,11 @@ public class RedirectController {
                         @RequestParam(required = false) String searchThis,
                         Model model){
 
-        List<Product> productList;
+        List<Product> productList = null;
 
         if (pgName == null || pgName.isEmpty()){
             if (searchThis == null || searchThis.isEmpty()) {
-                productList = pService.findAll();
+                    productList = pService.findAll();
             } else productList = pService.findAllBySearch("%"+searchThis+"%");
         }
         else productList = pService.findAllByProductGroupName(pgName);

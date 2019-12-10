@@ -48,7 +48,7 @@
         <div class="col-sm-7">
             <select class="form-control" id="odInvoicePaymentTypes" name="odInvoicePaymentTypes">
                 <c:forEach items="${paymentTypes}" var="paymentType">
-                    <option value="${paymentType}">${paymentType.id}</option>
+                    <option value="${paymentType}">${paymentType.getDescription()}</option>
                 </c:forEach>
             </select>
         </div>

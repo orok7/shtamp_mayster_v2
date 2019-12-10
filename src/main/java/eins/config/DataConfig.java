@@ -2,8 +2,10 @@ package eins.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,13 +23,21 @@ import java.util.Properties;
 @EnableJpaRepositories("eins.dao")
 public class DataConfig {
 
+    @Bean(initMethod = "migrate")
+    public Flyway flyway() {
+        return Flyway.configure()
+                .baselineOnMigrate(true)
+                .schemas("smdb_main")
+                .locations("classpath:/db/")
+                .dataSource(dataSource()).load();
+    }
 
     @Bean
     public DataSource dataSource(){
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName("com.mysql.jdbc.Driver");
-        hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/smdb_main?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        hikariConfig.setUsername("root");
+        hikariConfig.setDriverClassName("org.postgresql.Driver");
+        hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/smdb_main");
+        hikariConfig.setUsername("postgres");
         hikariConfig.setPassword("root");
 
         hikariConfig.setMaximumPoolSize(5);
@@ -46,19 +56,21 @@ public class DataConfig {
     @Bean
     public JpaVendorAdapter vendorAdapter(){
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setDatabase(Database.MYSQL);
+        vendorAdapter.setDatabase(Database.POSTGRESQL);
         vendorAdapter.setShowSql(true);
         return vendorAdapter;
     }
 
     @Bean("entityManagerFactory")
+    @DependsOn("flyway")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(vendorAdapter());
         factoryBean.setPackagesToScan("eins.entity");
         Properties properties = new Properties();
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "none");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
         factoryBean.setJpaProperties(properties);
         return factoryBean;
     }

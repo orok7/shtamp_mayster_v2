@@ -8,17 +8,17 @@ public interface InvoiceService {
 
     void save(Invoice o);
 
-    Invoice findOne(int id);
+    Invoice findOne(Long id);
 
     List<Invoice> findAll();
 
-    List<Invoice> findAllByBuyerId(int id);
+    List<Invoice> findAllByBuyerId(Long id);
 
-    List<Invoice> findAllWithProductsByBuyerId(int id);
+    List<Invoice> findAllWithProductsByBuyerId(Long id);
 
     List<Invoice> findAllWithBuyer();
 
-    Invoice findOneWithProducts(int id);
+    Invoice findOneWithProducts(Long id);
 
     List<Invoice> findAllWithProducts();
 

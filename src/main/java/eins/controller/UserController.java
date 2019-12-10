@@ -41,8 +41,8 @@ public class UserController {
                                @RequestParam String urPhoneNumber,
                                @RequestParam String urEmail){
 
-        int id = 0;
-        try { id = Integer.valueOf(urId); } catch (NumberFormatException e) { }
+        long id = 0;
+        try { id = Long.parseLong(urId); } catch (NumberFormatException ignored) { }
         User user = uService.findOneWithCompanyData(id);
         if (user == null) return "redirect:/user/userPage/main";
 
@@ -121,7 +121,7 @@ public class UserController {
     }
 
     @GetMapping("/userPage/detailsInvoice{id}")
-    public String detailsInvoice(@PathVariable("id") int id,
+    public String detailsInvoice(@PathVariable("id") long id,
                                  Model model) {
         Invoice invoice = invService.findOneWithProducts(id);
         model.addAttribute("invoiceProducts", invoice.getProducts());
@@ -192,7 +192,7 @@ public class UserController {
         user.setPhoneNumber(urPhoneNumber);
         user.setEmail(urEmail);
 
-        CompanyUser cUser = new CompanyUser(0, urOwnership, urFullName, urShortName, urCode);
+        CompanyUser cUser = new CompanyUser(0L, urOwnership, urFullName, urShortName, urCode);
 
         uService.save(user, cUser);
 

@@ -43,9 +43,9 @@ public class AdminController {
                               @RequestParam String descriptionProduct,
                               @RequestParam MultipartFile picture,
                               Model model) throws IOException {
-        int id = 0;
+        long id = 0;
         try {
-            id = Integer.valueOf(idProduct);
+            id = Long.parseLong(idProduct);
         } catch (NumberFormatException e) {
             System.out.println("NumberFormatException: try to parse: \"" + idProduct + "\"");
         }
@@ -53,10 +53,10 @@ public class AdminController {
         Product product = (id == 0) ? new Product() : pService.findOne(id);
         product.setName(nameProduct);
         product.setId(id);
-        product.setGroup(pgService.findOne(Integer.valueOf(productProductGroup)));
+        product.setGroup(pgService.findOne(Long.valueOf(productProductGroup)));
         product.setArticle(articleProduct);
         product.setMeasurementUnits(MeasurementUnits.valueOf(productMeasurementUnits));
-        product.setPrice(Double.valueOf(priceProduct));
+        product.setPrice(Double.parseDouble(priceProduct));
         product.setDescription(descriptionProduct);
 
         String originalFilename = picture.getOriginalFilename();
@@ -95,7 +95,7 @@ public class AdminController {
                                @RequestParam(required = false) String urCredentialsNonExpired,
                                @RequestParam(required = false) String urEnabled) {
 
-        User user = uService.findOneWithCompanyData(Integer.valueOf(urId));
+        User user = uService.findOneWithCompanyData(Long.valueOf(urId));
         if (user == null) {
             return "redirect:/admin/listUser";
         }
@@ -104,7 +104,7 @@ public class AdminController {
         user.setSurname(urSurname);
         user.setPhoneNumber(urPhoneNumber);
         user.setEmail(urEmail);
-        user.setDiscount(Integer.valueOf(urDiscount));
+        user.setDiscount(Integer.parseInt(urDiscount));
         user.setAccountNonExpired(urAccountNonExpired != null);
         user.setAccountNonLocked(urAccountNonLocked != null);
         user.setCredentialsNonExpired(urCredentialsNonExpired != null);
@@ -146,22 +146,20 @@ public class AdminController {
     public String listInvoice(Model model) {
         List<Invoice> list = invoiceService.findAllWithBuyer();
         list.sort(Comparator.comparing(Invoice::getDate));
-        String[] paymentTypes = (String[]) Arrays.stream(PaymentType.values()).map(PaymentType::toString).toArray();
-        model.addAttribute("paymentTypes", paymentTypes);
-        String[] statuses = (String[]) Arrays.stream(InvoiceStatus.values()).map(InvoiceStatus::toString).toArray();
-        model.addAttribute("invoiceStatus", statuses);
+        model.addAttribute("paymentTypes", PaymentType.values());
+        model.addAttribute("invoiceStatus", InvoiceStatus.values());
         model.addAttribute("listInvoice", list);
         return "invoiceList";
     }
 
     @PostMapping("/saveInvoice{id}")
-    public String saveInvoice(@PathVariable("id") int id,
+    public String saveInvoice(@PathVariable("id") long id,
                               @RequestParam String odPayed,
                               @RequestParam String odInvoicePaymentTypes,
                               @RequestParam String odInvoiceStatus) {
 
         Invoice invoice = invoiceService.findOne(id);
-        invoice.setPayed(Double.valueOf(odPayed));
+        invoice.setPayed(Double.parseDouble(odPayed));
         invoice.setPaymentType(PaymentType.valueOf(odInvoicePaymentTypes));
         invoice.setStatus(InvoiceStatus.valueOf(odInvoiceStatus));
         invoiceService.save(invoice);
@@ -170,7 +168,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyInvoice{id}")
-    public String modifyInvoice(@PathVariable("id") int id,
+    public String modifyInvoice(@PathVariable("id") long id,
                                 Model model) {
         Invoice invoice = invoiceService.findOneWithProducts(id);
         model.addAttribute("invoiceProducts", invoice.getProducts());
@@ -179,7 +177,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyUser{id}")
-    public String modifyUser(@PathVariable("id") int id, Model model) {
+    public String modifyUser(@PathVariable("id") long id, Model model) {
 
         model.addAttribute("user", uService.findOneWithCompanyData(id));
         return "userDetails";
@@ -198,7 +196,7 @@ public class AdminController {
     }
 
     @GetMapping("/modifyProduct{id}")
-    public String modifyProduct(@PathVariable("id") int id, Model model) {
+    public String modifyProduct(@PathVariable("id") long id, Model model) {
 
         Product product = pService.findOneWithGroup(id);
 
@@ -218,7 +216,7 @@ public class AdminController {
     }
 
     @GetMapping("/removeProduct{id}")
-    public String removeProduct(@PathVariable("id") int id) {
+    public String removeProduct(@PathVariable("id") long id) {
         pService.remove(id);
         return "redirect:/admin/listProduct";
     }
@@ -227,9 +225,9 @@ public class AdminController {
     public String saveProductGroup(@RequestParam String nameProductGroup,
                                    @RequestParam String idProductGroup,
                                    Model model) {
-        int id = 0;
+        long id = 0;
         try {
-            id = Integer.valueOf(idProductGroup);
+            id = Long.parseLong(idProductGroup);
         } catch (NumberFormatException e) {
             System.out.println("NumberFormatException: try to parse: \"" + idProductGroup + "\"");
         }
@@ -254,14 +252,14 @@ public class AdminController {
     }
 
     @GetMapping("/modifyProductGroup{id}")
-    public String modifyProductGroup(@PathVariable("id") int id, Model model) {
+    public String modifyProductGroup(@PathVariable("id") long id, Model model) {
         model.addAttribute("productGroupId", id);
         model.addAttribute("productGroupName", pgService.findOne(id).getName());
         return "/newProductGroup";
     }
 
     @GetMapping("/removeProductGroup{id}")
-    public String removeProductGroup(@PathVariable("id") int id) {
+    public String removeProductGroup(@PathVariable("id") long id) {
         pgService.remove(id);
         return "redirect:/admin/listProductGroup";
     }

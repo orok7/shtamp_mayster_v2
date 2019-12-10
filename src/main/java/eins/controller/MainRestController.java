@@ -38,13 +38,13 @@ public class MainRestController {
                                  HttpServletRequest request,
                                  HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
-        int num = Integer.valueOf(prod_num);
-        int prodId = Integer.valueOf(prod_id);
+        int num = Integer.parseInt(prod_num);
+        long prodId = Long.parseLong(prod_id);
         for (Cookie cookie: cookies) {
             if (cookie.getName().startsWith("prodid_")) {
-                int id = Integer.valueOf(cookie.getName().split("prodid_")[1]);
+                long id = Long.parseLong(cookie.getName().split("prodid_")[1]);
                 if (id == prodId) {
-                    num += Integer.valueOf(cookie.getValue());
+                    num += Integer.parseInt(cookie.getValue());
                     cookie.setValue(""+num);
                     cookie.setPath("/");
                     response.addCookie(cookie);

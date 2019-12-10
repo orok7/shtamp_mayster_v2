@@ -46,8 +46,8 @@
                 <td>${invoice.id}</td>
                 <td>${invoice.date}</td>
                 <td>${invoice.sum}</td>
-                <td>${invoice.paymentType.id}</td>
-                <td>${invoice.status.id}</td>
+                <td>${invoice.paymentType.getDescription()}</td>
+                <td>${invoice.status.getDescription()}</td>
                 <td><a href="/user/userPage/detailsInvoice${invoice.id}">Details</a></td>
             </tr>
                 <c:set var="indexPG" value="${indexPG + 1}" scope="page"/>
@@ -58,7 +58,7 @@
 
     <div class="container" style="display: ${upReviewShow};">
         <h1>Your reviews:</h1>
-        <div id="reviewsDiv" <%--class="" style="display: none;"--%>>
+        <div id="reviewsDiv">
             <div class="">
                 <c:forEach items="${reviews}" var="review">
                     <div class="review-div">
@@ -103,7 +103,7 @@
     });
 
     function submitSetNewPassForm() {
-        let oldPass = $('#oldPass').val();
+        var oldPass = $('#oldPass').val();
         $.ajax({
             url: "/user/passValidate",
             type: 'POST',

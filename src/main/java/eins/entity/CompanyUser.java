@@ -12,12 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "company_user")
+@Table(name = "company_user", schema = "smdb_main")
 public class CompanyUser{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "company_user_id")
+    private Long id;
 
     private String ownership;
 

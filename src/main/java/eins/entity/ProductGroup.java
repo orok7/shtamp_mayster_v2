@@ -12,12 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_group")
+@Table(name = "product_group", schema = "smdb_main")
 public class ProductGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "product_group_id")
+    private Long id;
 
     private String name;
 }
